@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  database:
+    image: mysql:8.0.33
+    container_name: database
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: myDB
+    ports:
+      - "3307:3306"
+
+
+  backend:
+    container_name: backend
+    env_file:
+      ../Backend/.env
+    build:
+      context: ../Backend
+    ports:
+      - "8080:8080"
+    environment:
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY}
+      S3_SECRET_KEY: ${S3_SECRET_KEY}
+    depends_on:
+      - database
+    restart: on-failure
