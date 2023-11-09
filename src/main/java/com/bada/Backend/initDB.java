@@ -19,6 +19,7 @@ public class initDB {
     @Component
     @Transactional
     @RequiredArgsConstructor
+    //commit test
     static class InitService{
         private final EntityManager em;
 
