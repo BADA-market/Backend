@@ -10,11 +10,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @RequiredArgsConstructor
 public class initDB {
-    private final EntityManager em;
-    //@PostConstruct
-    @Transactional
+    private final InitService initService;
+
+    @PostConstruct
     public void init() {
-        User doncham = new User("doncham");
-        em.persist(doncham);
+        initService.dbinit();
+    }
+    @Component
+    @Transactional
+    @RequiredArgsConstructor
+    static class InitService{
+        private final EntityManager em;
+
+        public void dbinit() {
+            User doncham = new User("doncham","1234");
+            em.persist(doncham);
+        }
     }
 }
