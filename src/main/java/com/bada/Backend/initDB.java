@@ -20,6 +20,7 @@ public class initDB {
     @Transactional
     @RequiredArgsConstructor
     //commit test
+    //commit test2
     static class InitService{
         private final EntityManager em;
 
