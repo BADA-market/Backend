@@ -21,7 +21,7 @@ public class User {
     @GeneratedValue
     @Column(name = "user_id")
     private Long id;
-    private String userId; // 아 아이디가 있구나
+    private String loginId; // 아 아이디가 있구나
     private String email; //토큰과 관련있음
     private String password;
 
@@ -45,12 +45,13 @@ public class User {
     private List<Item> items = new ArrayList<>();
 
     @Builder
-    public User(String nickname, String password, String email, Role role, String address) {
+    public User(String nickname, String password, String email, Role role, String address, String loginId) {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
         this.role = role;
         this.address = address;
+        this.loginId = loginId;
     }
 
     //유저 권한 설정 메소드 Guest에서 USER로 떡상
@@ -61,7 +62,7 @@ public class User {
 
     //비밀번호를 인코딩해서 저장하나봐
     public void passwordEncode(PasswordEncoder passwordEncoder) {
-        this.password = passwordEncoder.encode(this.password);
+         this.password = passwordEncoder.encode(this.password);
     }
 
     public void updateRefreshToken(String updateRefreshToken) {
