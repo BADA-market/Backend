@@ -25,8 +25,8 @@ public class initDB {
         private final EntityManager em;
 
         public void dbinit() {
-            User doncham = new User("doncham","1234");
-            em.persist(doncham);
+            //User doncham = new User("doncham","1234");
+            //em.persist(doncham);
         }
     }
 }
