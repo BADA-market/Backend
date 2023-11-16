@@ -27,7 +27,7 @@ public class UserService {
         if(userRepository.findByNickname(userSignUpDto.getNickname()).isPresent()) {
             throw new Exception("이미 존재하는 닉네임입니다.");
         }
-        log.info("good?");
+
         User user = User.builder()
                 .loginId(userSignUpDto.getUserId())
                 .email(userSignUpDto.getEmail())

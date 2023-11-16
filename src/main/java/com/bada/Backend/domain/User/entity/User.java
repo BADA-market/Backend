@@ -45,14 +45,21 @@ public class User {
     private List<Item> items = new ArrayList<>();
 
     @Builder
-    public User(String nickname, String password, String email, Role role, String address, String loginId) {
+    public User(String nickname, String password, String email, Role role, String address, String loginId,
+                SocialType socialType, String imageUrl, String socialId) {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
         this.role = role;
         this.address = address;
         this.loginId = loginId;
+        this.socialType = socialType;
+        this.imageUrl = imageUrl; // 또는 다른 필드 추가
+        this.socialId = socialId;
     }
+
+
+
 
     //유저 권한 설정 메소드 Guest에서 USER로 떡상
     //GUEST 소셜로그인 했는데 그 외 정보 입력 안 한 상태야

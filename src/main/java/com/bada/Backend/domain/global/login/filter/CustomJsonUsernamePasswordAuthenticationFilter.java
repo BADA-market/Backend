@@ -64,6 +64,7 @@ public class CustomJsonUsernamePasswordAuthenticationFilter extends AbstractAuth
 
         String messageBody = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
 
+        @SuppressWarnings("unchecked") //unchecked 컴파일 에러 : 타입 명시 제대로 해라
         Map<String, String> usernamePasswordMap = objectMapper.readValue(messageBody, Map.class);
 
         String email = usernamePasswordMap.get(USERNAME_KEY);

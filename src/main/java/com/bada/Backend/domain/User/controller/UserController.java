@@ -19,6 +19,10 @@ public class UserController {
         userService.signUp(userSignUpDto);
         return "회원가입 성공";
     }
+    @GetMapping("/")
+    public String home(){
+        return "안녕?";
+    }
 
     //서비스 테스트를 위한 API라는데... 테스트는 다른 글 참고하래
     @GetMapping("/jwt-test")

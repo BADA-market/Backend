@@ -1,4 +1,16 @@
 spring:
+  profiles:
+    group:
+      "local" : "local, jwt, oauth"
+    active : local
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "local"
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://database:3306/myDB
