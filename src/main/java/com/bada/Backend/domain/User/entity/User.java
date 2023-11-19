@@ -1,5 +1,6 @@
 package com.bada.Backend.domain.User.entity;
 
+import com.bada.Backend.domain.BaseEntity;
 import com.bada.Backend.domain.Item.entity.Item;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -12,7 +13,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "user_id")
