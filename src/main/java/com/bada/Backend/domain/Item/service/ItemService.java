@@ -75,9 +75,10 @@ public class ItemService {
     }
 
     @Transactional
-    public String changeItem(Long itemId){
+    public String updateItem(Long itemId,ItemSearchDTO itemSearchDTO){
         Item findItem = itemRepository.findById(itemId).get();
-        return "";
+        return findItem.UpdateItem(itemSearchDTO);
+
     }
 
 }

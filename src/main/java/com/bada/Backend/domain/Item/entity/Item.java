@@ -57,16 +57,17 @@ public class Item extends BaseEntity {
 
     }
 
-//    public Item UpdateItem(ItemSearchDTO itemSearchDTO) {
-//        this.picture_url = itemSearchDTO.getPicture_url();
-//        this.title = itemSearchDTO.getTitle();
-//        this.price = itemSearchDTO.getPrice();
-//        this.description = itemSearchDTO.getDescription();
-//        this.category = itemSearchDTO.getCategory();
-//        this.hope_location = itemSearchDTO.getHopeLocation();
-//
-//    }
-//
+    public String UpdateItem(ItemSearchDTO itemSearchDTO) {
+        this.picture_url = itemSearchDTO.getPicture_url();
+        this.title = itemSearchDTO.getTitle();
+        this.price = itemSearchDTO.getPrice();
+        this.description = itemSearchDTO.getDescription();
+        this.category = itemSearchDTO.getCategory();
+        this.hope_location = itemSearchDTO.getHopeLocation();
+        this.purchase_done = itemSearchDTO.getPurchase_done();
+        return "Update Success!!";
+    }
+
     public void DeleteItem(){
         this.is_deleted = true;
     }

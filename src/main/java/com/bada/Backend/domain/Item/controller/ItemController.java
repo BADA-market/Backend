@@ -46,4 +46,10 @@ public class ItemController {
         return itemService.deleteItem(itemId);
     }
 
+    @PatchMapping("item/{itemId}")
+    public String UpdateItem(@RequestBody ItemSearchDTO itemSearchDTO, @PathVariable("itemId") Long itemId)
+    {
+        return itemService.updateItem(itemId,itemSearchDTO);
+    }
+
 }
