@@ -11,7 +11,7 @@ public class ItemCreateDTO {
     private int price;
     private String description;
     private String category;
-    private String hope_location;
+    private String hopeLocation;
 
 
 

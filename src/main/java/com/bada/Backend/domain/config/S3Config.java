@@ -1,4 +1,4 @@
-package com.bada.Backend.domain;
+package com.bada.Backend.domain.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;

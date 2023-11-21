@@ -1,6 +1,7 @@
 package com.bada.Backend.domain.Item.entity;
 
 import com.bada.Backend.domain.BaseEntity;
+import com.bada.Backend.domain.Item.dto.ItemSearchDTO;
 import com.bada.Backend.domain.User.entity.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -54,6 +55,20 @@ public class Item extends BaseEntity {
         this.purchase_done = false; //안 팔림
         this.is_deleted = false; //안 삭제됨
 
+    }
+
+//    public Item UpdateItem(ItemSearchDTO itemSearchDTO) {
+//        this.picture_url = itemSearchDTO.getPicture_url();
+//        this.title = itemSearchDTO.getTitle();
+//        this.price = itemSearchDTO.getPrice();
+//        this.description = itemSearchDTO.getDescription();
+//        this.category = itemSearchDTO.getCategory();
+//        this.hope_location = itemSearchDTO.getHopeLocation();
+//
+//    }
+//
+    public void DeleteItem(){
+        this.is_deleted = true;
     }
 
 }
