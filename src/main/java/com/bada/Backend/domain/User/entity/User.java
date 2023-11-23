@@ -2,6 +2,7 @@ package com.bada.Backend.domain.User.entity;
 
 import com.bada.Backend.domain.BaseEntity;
 import com.bada.Backend.domain.Item.entity.Item;
+import com.bada.Backend.domain.likes.entity.Likes;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,6 +37,8 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private List<Item> items = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user") //mappedBy 뒤에 나오는게 뭐지?? 겹치는게 불편한데..
+    private List<Likes> likes = new ArrayList<>();
 
 
 

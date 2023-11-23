@@ -31,14 +31,14 @@ public class ItemController {
 
     }
 
-    @GetMapping("/item/time") //시간순 조회
-    public List<ItemSearchDTO> getItem(){
-        return itemService.getItem();
+    @GetMapping("/item/time/{userId}") //시간순 조회
+    public List<ItemSearchDTO> getItem(@PathVariable("userId") Long userId){
+        return itemService.getItem(userId);
     }
 
-    @GetMapping("/item/{category}")
-    public List<ItemSearchDTO> getItemByCategory(@PathVariable("category") String category){
-        return itemService.getItemByCategory(category);
+    @GetMapping("/item/{category}/{userId}")
+    public List<ItemSearchDTO> getItemByCategory(@PathVariable("category") String category,@PathVariable("userId") Long userId){
+        return itemService.getItemByCategory(category, userId);
     }
 
     @DeleteMapping("/item/{itemId}")

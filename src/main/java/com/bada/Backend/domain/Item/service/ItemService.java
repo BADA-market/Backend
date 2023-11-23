@@ -6,6 +6,8 @@ import com.bada.Backend.domain.Item.entity.Item;
 import com.bada.Backend.domain.Item.repository.ItemRepository;
 import com.bada.Backend.domain.User.entity.User;
 import com.bada.Backend.domain.User.repository.UserRepository;
+import com.bada.Backend.domain.likes.entity.Likes;
+import com.bada.Backend.domain.likes.repository.LikesRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,6 +25,7 @@ import java.util.stream.Collectors;
 public class ItemService {
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
+    private final LikesRepository likesRepository;
 
 
 
@@ -41,25 +45,41 @@ public class ItemService {
 
     }
 
-    public List<ItemSearchDTO> getItem(){
+    public List<ItemSearchDTO> getItem(Long userId){
 
         List<Item> items = itemRepository.findByOrderByCreatedAtDesc();
+        AtomicBoolean heart = new AtomicBoolean(false);
         return items.stream()
                 .filter(item->
-                        item.getIs_deleted().equals(false)
+                        item.getIs_deleted().equals(false) //Is_deleted == True 이면 조회x
                 )
-                .map(ItemSearchDTO::from)
-                .collect(Collectors.toList());
+                .peek(item -> { //유저가 좋아요를 누른 게시물이라면 heart = true, 아니라면 heart = false로 설정
+                    Optional<Likes> likesOptional = Optional.ofNullable(likesRepository.findByUserIdAndItemId(userId, item.getId()));
+                    heart.set(likesOptional.isPresent());
+                        })
+                .map(ItemSearchDTO::from) //조회한 items리스트의 각 item을 ItemSearchDTO로 바꿈
+                .peek(itemSearchDTO -> {
+                        itemSearchDTO.setHeart(heart.get());
+                })
+                .collect(Collectors.toList()); //바뀐 ItemSearchDTO를 하나씩 배열에 집어넣음
 
     }
 
-    public List<ItemSearchDTO> getItemByCategory(String category){
+    public List<ItemSearchDTO> getItemByCategory(String category, Long userId){
         List<Item> byCategory = itemRepository.findByCategoryOrderByCreatedAtDesc(category);
+        AtomicBoolean heart = new AtomicBoolean(false);
         return byCategory.stream()
                 .filter(item->
                      item.getIs_deleted().equals(false)
                 )
+                .peek(item -> { //유저가 좋아요를 누른 게시물이라면 heart = true, 아니라면 heart = false로 설정
+                    Optional<Likes> likesOptional = Optional.ofNullable(likesRepository.findByUserIdAndItemId(userId, item.getId()));
+                    heart.set(likesOptional.isPresent());
+                })
                 .map(ItemSearchDTO::from)
+                .peek(itemSearchDTO -> {
+                    itemSearchDTO.setHeart(heart.get());
+                })
                 .collect(Collectors.toList());
 
     }
