@@ -52,4 +52,9 @@ public class ItemController {
         return itemService.updateItem(itemId,itemSearchDTO);
     }
 
+//    @GetMapping("/item/likes/{userId}")
+//    public List<ItemSearchDTO> getPopularItem(@PathVariable("userId") Long userId){
+//        return itemService.getPopularItem(userId);
+//    }
+
 }

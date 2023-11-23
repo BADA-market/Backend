@@ -47,7 +47,7 @@ public class Item extends BaseEntity {
     private User user;
 
 
-    @OneToMany(mappedBy = "")
+    @OneToMany(mappedBy = "item")
     private List<Likes> likesList = new ArrayList<>();
 
     @Builder //카테고리 추가 점
