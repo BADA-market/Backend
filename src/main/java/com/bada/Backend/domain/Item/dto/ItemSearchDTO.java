@@ -40,6 +40,7 @@ public class ItemSearchDTO {
         itemSearchDTO.setLike_count(item.getLike_count());
         itemSearchDTO.setPurchase_done(item.getPurchase_done());
         itemSearchDTO.setCreateAt(item.getCreatedAt());
+        itemSearchDTO.setUser_id(item.getUser().getId());
 
 
         return itemSearchDTO;
