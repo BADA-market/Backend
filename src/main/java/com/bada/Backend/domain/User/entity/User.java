@@ -21,14 +21,14 @@ public class User extends BaseEntity {
     private Long id;
 
     private String nickname;
+    private String loginId; // 아 아이디가 있구나
+    private String email; //토큰과 관련있음
 
     private String password;
 
     private String address; //뭔 형식이야?
 
     private Boolean is_deleted;
-
-    private String email;
 
     private String imageUrl;
 
