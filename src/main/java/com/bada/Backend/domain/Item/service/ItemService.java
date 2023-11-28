@@ -44,27 +44,32 @@ public class ItemService {
         return "itemCreated";
 
     }
-//    public List<ItemSearchDTO> getPopularItem(Long userId){  //5개 줄까?
-//        List<Object[]> result = itemRepository.findItemsWithLikeCount(3); //최상위 3개만 조회하자!
-//        AtomicBoolean heart = new AtomicBoolean(false);
-//        return result.stream().filter(row->{
-//                Item item = (Item) row[0];
-//                Long likeCount = (Long) row[1];
-//                log.error("ee",String.valueOf(likeCount));
-//                return !item.getIs_deleted(); //이게 참이여야 다음으로 이동
-//            })
-//                .peek(filteredRow -> { //하트 찍기
-//                    Item item = (Item) filteredRow[0];
-//                    Optional<Likes> likesOptional = Optional.ofNullable(likesRepository.findByUserIdAndItemId(userId, item.getId()));
-//                    heart.set(likesOptional.isPresent());
-//                })
-//                .map(row -> { //item -> itemSearchDTO로 변환
-//                    Item item = (Item) row[0];
-//                    ItemSearchDTO dto = ItemSearchDTO.from(item);
-//                    return dto;
-//                })
-//                .collect(Collectors.toList());
-//    }
+    public List<ItemSearchDTO> getPopularItem(Long userId){
+        List<Object[]> result = itemRepository.findItemsWithLikeCount();
+        AtomicBoolean heart = new AtomicBoolean(false);
+        return result.stream().filter(row->{
+                Item item = (Item)row[0];
+                Long likeCount = (Long) row[1];
+                log.info("row[0]",item);
+                log.info("row[1]",likeCount);
+                log.info("row[2]",123445);
+                System.out.println("123");
+                System.out.println(likeCount);
+                System.out.println(item.getTitle());
+                System.out.println(item.getIs_deleted());
+                return item != null && !item.getIs_deleted(); //이게 참이여야 다음으로 이동
+            })
+                .map(row -> { //item -> itemSearchDTO로 변환
+                    Item item = (Item) row[0];
+                    System.out.println("heart 진짜 나오냐?" + item.getTitle());
+                    Optional<Likes> likesOptional = Optional.ofNullable(likesRepository.findByUserIdAndItemId(userId, item.getId()));
+                    heart.set(likesOptional.isPresent());
+                    ItemSearchDTO dto = ItemSearchDTO.from(item);
+                    dto.setHeart(heart.get());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
 
     public List<ItemSearchDTO> getItem(Long userId){
 
