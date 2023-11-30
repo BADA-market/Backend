@@ -1,5 +1,6 @@
 package com.bada.Backend;
 
+import com.bada.Backend.domain.User.dto.UserSignUpDto;
 import com.bada.Backend.domain.User.entity.User;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
@@ -25,7 +26,9 @@ public class initDB {
         private final EntityManager em;
 
         public void dbinit() {
-            User doncham = new User("doncham","1234");
+
+            User doncham = new User();
+            doncham.dummyUser("돈참","1234");
             em.persist(doncham);
         }
     }
