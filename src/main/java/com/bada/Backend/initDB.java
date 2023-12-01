@@ -26,7 +26,11 @@ public class initDB {
 
         public void dbinit() {
             User doncham = new User("doncham","1234");
+            User speakingPotato = new User("감자", "1234");
+            User banana = new User("banana", "1234");
             em.persist(doncham);
+            em.persist(speakingPotato);
+            em.persist(banana);
         }
     }
 }
