@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   database:
-    image: mysql:8.0.33
+    image: mysql:8.0.34
     container_name: database
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -23,6 +23,35 @@ services:
     environment:
       S3_ACCESS_KEY: ${S3_ACCESS_KEY}
       S3_SECRET_KEY: ${S3_SECRET_KEY}
+      RABBIT_HOST: rabbitmq
     depends_on:
       - database
     restart: on-failure
+
+
+  rabbitmq:
+    hostname: rabbitmq
+    image: rabbitmq:3.12.11-management
+    container_name: rabbitmq
+
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+      - "61613:61613"
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+      RABBITMQ_STOMP_PORT: 61613
+    command:
+      - bash
+      - -c
+      - |
+        rabbitmq-plugins enable rabbitmq_web_stomp && rabbitmq-plugins enable rabbitmq_web_stomp_examples && rabbitmq-server
+
+
+
+
+
+
+
+
