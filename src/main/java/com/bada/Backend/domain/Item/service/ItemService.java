@@ -104,6 +104,15 @@ public class ItemService {
                 .collect(Collectors.toList());
 
     }
+
+    public List<ItemSearchDTO> getItemBySearch(String search) {
+        List<Item> bySearch = itemRepository.findAll();
+        return bySearch.stream()
+                .filter(item -> item.getIs_deleted().equals(false))     // 아직 판매중인 상품 중
+                .filter(item -> item.getTitle().contains(search))       // title에 search가 포함된 것들만 필터링
+                .map(ItemSearchDTO::from)
+                .collect(Collectors.toList());
+    }
     @Transactional
     public String deleteItem(Long itemId){
         //삭제할 때 is_deleted를 true로 바꿈 -> 아 조회할 때 is_deleted false만 조회해야 하네..

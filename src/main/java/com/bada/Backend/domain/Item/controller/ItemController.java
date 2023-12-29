@@ -37,8 +37,13 @@ public class ItemController {
     }
 
     @GetMapping("/item/{category}/{userId}")
-    public List<ItemSearchDTO> getItemByCategory(@PathVariable("category") String category,@PathVariable("userId") Long userId){
+    public List<ItemSearchDTO> getItemByCategory(@PathVariable("category") String category, @PathVariable("userId") Long userId){
         return itemService.getItemByCategory(category, userId);
+    }
+
+    @GetMapping("/item/{search}")
+    public List<ItemSearchDTO> getItemBySearch(@PathVariable("search") String search) {
+        return itemService.getItemBySearch(search);
     }
 
     @DeleteMapping("/item/{itemId}")
