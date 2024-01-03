@@ -41,12 +41,16 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: "guest"
       RABBITMQ_DEFAULT_PASS: "guest"
-      RABBITMQ_STOMP_PORT: 61613
+      #RABBITMQ_DEFAULT_VHOST: "/"
+
     command:
       - bash
       - -c
       - |
         rabbitmq-plugins enable rabbitmq_web_stomp && rabbitmq-plugins enable rabbitmq_web_stomp_examples && rabbitmq-server
+
+    volumes:
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
 
 
 

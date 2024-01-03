@@ -5,6 +5,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.UUID;
+
 @Controller
 @RequestMapping("/chat")
 public class ChatRoomController {
@@ -18,7 +20,8 @@ public class ChatRoomController {
 
     @GetMapping("/room")
     public String getRoom(Long chatRoomId, String nickname, Model model) {
-        model.addAttribute("chatRoomId", chatRoomId);
+        //채팅방 번호를 uuid로 만들고 -> 라우팅키로 사용
+        model.addAttribute("chatRoomId", UUID.randomUUID());
         model.addAttribute("nickname", nickname);
         return "chat/room";
     }
