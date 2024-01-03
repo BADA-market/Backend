@@ -55,8 +55,8 @@
     const chatRoomId = [[${chatRoomId}]];
     const nickname = [[${nickname}]];
 
-    const sockJS = new SockJS("/stomp/chat");
-    const stomp = Stomp.over(sockJS);
+    const sockJS = new SockJS("/stomp/chat"); //웹소켓 연결(아마?)
+    const stomp = Stomp.over(sockJS); //stomp 클라이언트 생성, 웹소켓 연결을 stomp 프로토콜로 통신 가능
 
     stomp.heartbeat.outgoing = 0; //Rabbit에선 heartbeat 안먹힌다고 함
     stomp.heartbeat.incoming = 0; //Rabbit에선 heartbeat 안먹힌다고 함
@@ -71,7 +71,7 @@
 
     stomp.debug = onDebug;
 
-    stomp.connect('guest', 'guest', function (frame) {
+    stomp.connect('guest', 'guest', function (frame) { // RabbitMQ에 guest/guest로 접속
 
         console.log('STOMP Connected');
 
@@ -98,7 +98,7 @@
         //입장 메세지 전송
         stomp.send(`/pub/chat.enter.${chatRoomId}`, {}, JSON.stringify({
             memberId: 1,
-            nickname: nickname
+            nickname: nickname능
         }));
 
     }, onError, '/');
