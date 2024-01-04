@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -38,8 +35,8 @@ public class RabbitConfig {
     // Exchange 등록
     // TopicExchange 는 라우팅 키를 기반으로 메세지를 큐로 라우팅하는 방식
     @Bean
-    public TopicExchange exchange() {
-        return new TopicExchange(CHAT_EXCHANGE_NAME);
+    public DirectExchange exchange() {
+        return new DirectExchange(CHAT_EXCHANGE_NAME);
     }
 
 
