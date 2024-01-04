@@ -52,8 +52,11 @@
     const messageContent = document.querySelector('#message');
     const btnSend = document.querySelector('.btn-send');
 
-    const chatRoomId = [[${chatRoomId}]];
+
     const nickname = [[${nickname}]];
+    const sellerId = [[${seller}]];
+    const buyerId = [[${buyer}]];
+    const routingKey = [[${routingKey}]];
 
     const sockJS = new SockJS("/stomp/chat"); //웹소켓 연결(아마?)
     const stomp = Stomp.over(sockJS); //stomp 클라이언트 생성, 웹소켓 연결을 stomp 프로토콜로 통신 가능
@@ -76,7 +79,7 @@
         console.log('STOMP Connected');
 
         /* subscribe 설정에 따라 rabbit의 Exchange, Queue가 상당히 많이 바뀜 */
-            stomp.subscribe(`/exchange/chat.exchange/room.${chatRoomId}`, function (content) {
+            stomp.subscribe(`/exchange/chat.exchange/room.${routingKey}`, function (content) {
 
             const payload = JSON.parse(content.body);
 
@@ -96,9 +99,9 @@
         },{'auto-delete':true, 'durable':false, 'exclusive':false});
 
         //입장 메세지 전송
-        stomp.send(`/pub/chat.enter.${chatRoomId}`, {}, JSON.stringify({
-            memberId: 1,
-            nickname: nickname능
+        stomp.send(`/pub/chat.enter`, {}, JSON.stringify({
+            routingKey : routingKey,
+            nickname: nickname
         }));
 
     }, onError, '/');
@@ -110,7 +113,7 @@
         const message = messageContent.value;
         messageContent.value = '';
 
-        stomp.send(`/pub/chat.message.${chatRoomId}`, {}, JSON.stringify({
+        stomp.send(`/pub/chat.message.${routingKey}`, {}, JSON.stringify({
             message: message,
             memberId: 1,
             nickname: nickname

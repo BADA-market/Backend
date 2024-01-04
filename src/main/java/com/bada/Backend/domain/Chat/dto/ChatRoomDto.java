@@ -11,6 +11,9 @@ public class ChatRoomDto {
     private Long seller;
     private Long buyer;
 
-
+    public ChatRoomDto(Long seller, Long buyer) {
+        this.seller = seller;
+        this.buyer = buyer;
+    }
 
 }

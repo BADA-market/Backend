@@ -7,5 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoom,String> {
-    List<ChatRoom> findByBuyer(Long buyer);
+    List<ChatRoom> findByBuyerId(Long buyerId);
+
+    List<ChatRoom> findByBuyerIdAndSellerId(Long buyerId, Long sellerId);
 }

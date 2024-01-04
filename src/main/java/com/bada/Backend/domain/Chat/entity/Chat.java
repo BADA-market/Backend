@@ -20,7 +20,8 @@ public class Chat {
     private Long id;
     private MessageType type; // 메시지 타입
     @ManyToOne(fetch = FetchType.LAZY)
-    private String roomId; // 방 번호
+    @JoinColumn(name = "chatroom_id")
+    private ChatRoom chatRoom; // 방 번호
     private String sender; // 발송자
     private String message; // 메시지
     private String time; // 채팅 발송 시간, 정렬 시 필요

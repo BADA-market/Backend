@@ -1,6 +1,8 @@
 package com.bada.Backend.domain.Chat.controller;
 
+import com.bada.Backend.domain.Chat.Service.ChatService;
 import com.bada.Backend.domain.Chat.dto.ChatDto;
+import com.bada.Backend.domain.Chat.dto.ChatRoomDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -8,6 +10,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 
@@ -16,18 +19,25 @@ import java.time.LocalDateTime;
 @Slf4j
 public class StompRabbitController {
 
+    private final ChatService chatService;
+
     private final RabbitTemplate template;
 
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
     private final static String CHAT_QUEUE_NAME = "chat.queue";
 
-    @MessageMapping("chat.enter.{chatRoomId}")
-    public void enter(ChatDto chatDto, @DestinationVariable String chatRoomId) {
+    //이게 결국에는 채팅하기 버튼 클릭시 실행되는 로직에 되는거야
+    @MessageMapping("chat.enter")
+    public void enter(String routingKey, ChatDto chatDto) {
         chatDto.setMessage("입장하셨습니다.");
         chatDto.setRegDate(LocalDateTime.now());
 
+        log.info("routingKey = {}", routingKey);
+        //createRoom의 반환값을 라우팅키로 바꿔서 밑의 전송 로직의 목적지가 되어야 해
+
+
         // exchange
-        template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chatDto);
+        template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + routingKey, chatDto);
         // template.convertAndSend("room." + chatRoomId, chat); //queue
         // template.convertAndSend("amq.topic", "room." + chatRoomId, chat); //topic
     }
