@@ -113,6 +113,7 @@ public class ItemService {
                 .map(ItemSearchDTO::from)
                 .collect(Collectors.toList());
     }
+
     @Transactional
     public String deleteItem(Long itemId){
         //삭제할 때 is_deleted를 true로 바꿈 -> 아 조회할 때 is_deleted false만 조회해야 하네..
