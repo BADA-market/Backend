@@ -3,6 +3,7 @@ package com.bada.Backend.domain.Chat.controller;
 import com.bada.Backend.domain.Chat.Service.ChatService;
 import com.bada.Backend.domain.Chat.dto.ChatDto;
 import com.bada.Backend.domain.Chat.dto.ChatRoomDto;
+import com.bada.Backend.domain.Chat.entity.Chat;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,30 +28,32 @@ public class StompRabbitController {
     private final static String CHAT_EXCHANGE_NAME = "chat.exchange";
     private final static String CHAT_QUEUE_NAME = "chat.queue";
 
+
+
     //이게 결국에는 채팅하기 버튼 클릭시 실행되는 로직에 되는거야
-    @MessageMapping("chat.enter")
-    public void enter(String routingKey, ChatDto chatDto) {
-        chatDto.setMessage("입장하셨습니다.");
-        chatDto.setRegDate(LocalDateTime.now());
+    @MessageMapping("chat.enter.{routingKey}")
+    public void enter(@DestinationVariable String routingKey, ChatDto chatDto) {
 
-        log.info("routingKey = {}", routingKey);
-        //createRoom의 반환값을 라우팅키로 바꿔서 밑의 전송 로직의 목적지가 되어야 해
+        List<Chat> chats = chatService.chatHistory(routingKey);
+        if (!chats.isEmpty())
+        {
 
+        }
 
-        // exchange
-        template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + routingKey, chatDto);
-        // template.convertAndSend("room." + chatRoomId, chat); //queue
-        // template.convertAndSend("amq.topic", "room." + chatRoomId, chat); //topic
     }
 
     //WebSocket을 통해 들어오는 메시지를 처리하는데 사용됩니다.
-    @MessageMapping("chat.message.{chatRoomId}")
-    public void send(ChatDto chatDto, @DestinationVariable String chatRoomId) {
+    @MessageMapping("chat.message.{routingKey}")
+    public void send(ChatDto chatDto, @DestinationVariable String routingKey) {
         chatDto.setRegDate(LocalDateTime.now());
 
-        template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + chatRoomId, chatDto);
+        template.convertAndSend(CHAT_EXCHANGE_NAME, "room." + routingKey, chatDto);
         //template.convertAndSend( "room." + chatRoomId, chat);
         //template.convertAndSend("amq.topic", "room." + chatRoomId, chat);
+
+        //여기서는 chat 엔티티를 만들어서 DB에 저장하는 로직을 넣어야 해
+        chatService.chatSave(chatDto, routingKey);
+
     }
 
     // receiver()는 단순히 큐에 들어온 메세지를 소비만 한다. (현재는 디버그 용도)

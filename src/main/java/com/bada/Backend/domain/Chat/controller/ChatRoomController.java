@@ -24,7 +24,8 @@ public class ChatRoomController {
         System.out.println("1234");
         return "chat/rooms";
     }
-
+    // 나중에 받는 데이터를 JSON으로 수정할 필요가 있어
+    // 지금은 html을 내가 만들어서 form-data로 데이터를 받느라 이 형태야
     @GetMapping("/room")
     public String createRoom(String nickname, Model model, String seller, String buyer) {
         long sellerId = Long.parseLong(seller);

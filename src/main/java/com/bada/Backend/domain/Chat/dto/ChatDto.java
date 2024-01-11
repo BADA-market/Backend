@@ -16,9 +16,12 @@ import java.time.LocalDateTime;
 public class ChatDto {
     private Long id;
     private Long chatRoomId;
-    private Long memberId;
+
     private String message;
     private String region;
+
+    private Long sender;
+    private String nickname;
 
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime regDate;

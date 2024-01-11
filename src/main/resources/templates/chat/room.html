@@ -99,8 +99,9 @@
         },{'auto-delete':true, 'durable':false, 'exclusive':false});
 
         //입장 메세지 전송
-        stomp.send(`/pub/chat.enter`, {}, JSON.stringify({
+        stomp.send(`/pub/chat.enter.${routingKey}`, {}, JSON.stringify({
             routingKey : routingKey,
+            memberId: 1,
             nickname: nickname
         }));
 
@@ -115,7 +116,7 @@
 
         stomp.send(`/pub/chat.message.${routingKey}`, {}, JSON.stringify({
             message: message,
-            memberId: 1,
+            sender: buyerId,
             nickname: nickname
         }));
     });
