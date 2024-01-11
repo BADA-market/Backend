@@ -1,4 +1,4 @@
-package com.bada.Backend.domain.trade.entity;
+package com.bada.Backend.domain.trades.entity;
 
 import com.bada.Backend.domain.Item.entity.Item;
 import com.bada.Backend.domain.User.entity.User;
@@ -18,10 +18,6 @@ public class Trades {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="seller_id")
-    private User seller;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="buyer_id")
     private User buyer;
 
@@ -32,8 +28,7 @@ public class Trades {
     private boolean purchase_done;
 
     @Builder
-    public Trades(User seller, User buyer, Item item) {
-        this.seller = seller;
+    public Trades(User buyer, Item item) {
         this.buyer = buyer;
         this.item = item;
         this.purchase_done = true;
