@@ -1,21 +1,20 @@
 package com.bada.Backend.domain.Chat.Service;
 
+import com.bada.Backend.domain.Chat.dto.ChatDto;
 import com.bada.Backend.domain.Chat.dto.ChatRoomDto;
+import com.bada.Backend.domain.Chat.entity.Chat;
 import com.bada.Backend.domain.Chat.entity.ChatRoom;
+import com.bada.Backend.domain.Chat.repository.ChatRepository;
 import com.bada.Backend.domain.Chat.repository.ChatRoomRepository;
 import com.bada.Backend.domain.User.entity.User;
 import com.bada.Backend.domain.User.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
+
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
-
-import java.io.IOException;
 import java.util.*;
 
 @Slf4j
@@ -28,6 +27,7 @@ public class ChatService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final UserRepository userRepository;
+    private final ChatRepository chatRepository;
 
 
     //사용자가 지금까지 만든 채팅방 목록을 보여주기 위한 메소드
@@ -65,6 +65,30 @@ public class ChatService {
         else{
             return chatroom.get(0).getRoutingKey();
         }
+    }
+
+    @Transactional
+    public void chatSave(ChatDto chatDto, String routingKey){
+
+        ChatRoom chatRoom = chatRoomRepository.findById(routingKey).get();
+
+
+        Chat chat = Chat.builder()
+                .sender(chatDto.getSender())
+                .nickname(chatDto.getNickname())
+                .time(chatDto.getRegDate().toString())
+                .message(chatDto.getMessage())
+                .chatRoom(chatRoom).build();
+
+        chatRepository.save(chat);
+    }
+
+    @Transactional
+    public List<Chat> chatHistory(String routingKey){
+        List<Chat> chatList = chatRepository.findByChatRoomId(routingKey);
+
+        return chatList;
+
     }
 
 

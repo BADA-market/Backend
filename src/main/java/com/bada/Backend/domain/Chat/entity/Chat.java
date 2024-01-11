@@ -18,12 +18,23 @@ public class Chat {
     @GeneratedValue
     @Column(name = "chat_id")
     private Long id;
-    private MessageType type; // 메시지 타입
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chatroom_id")
     private ChatRoom chatRoom; // 방 번호
-    private String sender; // 발송자
+    private Long sender; // 발송자
+
+    private String nickname; // 발송자 닉네임
     private String message; // 메시지
     private String time; // 채팅 발송 시간, 정렬 시 필요
+
+    @Builder
+    public Chat(ChatRoom chatRoom, Long sender, String nickname, String message, String time) {
+        this.chatRoom = chatRoom;
+        this.sender = sender;
+        this.nickname = nickname;
+        this.message = message;
+        this.time = time;
+    }
 
 }
