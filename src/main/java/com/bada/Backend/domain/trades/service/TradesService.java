@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class TradesService {
-    private final TradesRepository tradesRepository;
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
+    private final TradesRepository tradesRepository;
 
     @Transactional      // 거래 내역 생성(성립)
     public String saveTrades(Long ItemId, Long buyerId) {
