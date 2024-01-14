@@ -73,13 +73,13 @@ public class ChatService {
                     .buyer(Buyer)
                     .build();
 
-            Seller.getChatRooms().add(room);
+            //chatRoom을 만들었으니까 seller와 buyer에게 chatroom 정보 추가 -> 조회
+            Seller.getChatRooms().add(room); //아니 DB에 추가되는 것도 아닌데 이거 왜 추가하는거야 맨날??
             Buyer.getChatRooms().add(room);
 
-            //chatRoom을 만들었으니까 seller와 buyer에게 chatroom 정보 추가 -> 조회
 
 
-            //이게 엔티티에 추가하는 느낌인가보네
+
             chatRoomRepository.save(room); //변환
             return room.getRoutingKey();
         }

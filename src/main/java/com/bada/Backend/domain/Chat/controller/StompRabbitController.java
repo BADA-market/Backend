@@ -30,7 +30,7 @@ public class StompRabbitController {
 
 
 
-    //이게 결국에는 채팅하기 버튼 클릭시 실행되는 로직에 되는거야
+    //이게 채팅하기 버튼 클릭시 실행되는 로직에 되는거야, 프론트 생기면 구현 ㄱㄱ
     @MessageMapping("chat.enter.{routingKey}")
     public void enter(@DestinationVariable String routingKey, ChatDto chatDto) {
 
@@ -57,7 +57,7 @@ public class StompRabbitController {
     }
 
     // receiver()는 단순히 큐에 들어온 메세지를 소비만 한다. (현재는 디버그 용도)
-    // 지정한 큐에서 메세지를 비동기적으로 수신할 리스너를 정의한다.
+    // 지정한 큐에서 메세지를 비동기적으로 수신할 리스너를 정의한다. 우리는 큐가 채팅방 나가면 사라지니까 쓸 일이 없지만 이런 기능도 있구나 식으로 알아두자
     @RabbitListener(queues = CHAT_QUEUE_NAME)
     public void receive(ChatDto chatDto) {
         log.info("chatDto.getMessage() = {}",chatDto.getMessage());

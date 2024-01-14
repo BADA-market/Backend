@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Chat {
     // 메시지  타입 : 입장, 채팅
-    public enum MessageType{
-        ENTER, TALK
-    }
+//    public enum MessageType{
+//        ENTER, TALK
+//    }
     @Id
     @GeneratedValue
     @Column(name = "chat_id")

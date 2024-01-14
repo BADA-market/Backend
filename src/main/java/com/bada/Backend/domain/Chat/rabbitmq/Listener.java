@@ -4,7 +4,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component // 안씀
 public class Listener {
 
     @RabbitListener(queues = "chat.queue")
