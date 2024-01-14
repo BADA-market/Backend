@@ -1,6 +1,7 @@
 package com.bada.Backend.domain.Chat.entity;
 
 import com.bada.Backend.domain.Chat.Service.ChatService;
+import com.bada.Backend.domain.Item.entity.Item;
 import com.bada.Backend.domain.User.entity.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -28,15 +29,20 @@ public class ChatRoom {
     @JoinColumn(name = "buyer_id")
     private User buyer; // 여기서 User는 하나의 채팅방에 대한 구매자입니다.
 
+    @OneToOne
+    @JoinColumn(name = "item_id") // 채팅방에서 물건에 접근할 일이 더 많을거 같아서 외래키로 지정
+    private Item item;
     @OneToMany(mappedBy = "chatRoom")
     private List<Chat> chats = new ArrayList<>();
 
 
+
     @Builder
-    public ChatRoom(User seller, User buyer, String routingKey) {
+    public ChatRoom(User seller, User buyer, String routingKey, Item item) {
         this.routingKey = routingKey;
         this.buyer = buyer;
         this.seller = seller;
+        this.item = item;
     }
 
 

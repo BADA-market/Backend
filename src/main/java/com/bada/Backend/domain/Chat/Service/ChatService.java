@@ -6,6 +6,7 @@ import com.bada.Backend.domain.Chat.entity.Chat;
 import com.bada.Backend.domain.Chat.entity.ChatRoom;
 import com.bada.Backend.domain.Chat.repository.ChatRepository;
 import com.bada.Backend.domain.Chat.repository.ChatRoomRepository;
+
 import com.bada.Backend.domain.User.entity.User;
 import com.bada.Backend.domain.User.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Data
@@ -30,12 +32,29 @@ public class ChatService {
     private final ChatRepository chatRepository;
 
 
-    //사용자가 지금까지 만든 채팅방 목록을 보여주기 위한 메소드
-    //상세설계 필요
-    public List<ChatRoom> findRoomByBuyerId(Long buyerId){
-        //return chatRooms.get(roomId);
-        return chatRoomRepository.findByBuyerId(buyerId);
+    //사용자가 구매자인 채팅방 목록 조회
+    public List<ChatRoomDto> findRoomByBuyerId(Long buyerId){
+        List<ChatRoom> byBuyerId = chatRoomRepository.findByBuyerId(buyerId);
+        return byBuyerId.stream().map(chatRoom -> {
+            ChatRoomDto chatroomdto = ChatRoomDto.builder().seller(chatRoom.getSeller().getId())
+                    .buyer(chatRoom.getBuyer().getId())
+                    //item 관련 코드는 전부 빼놈
+                    .routingKey(chatRoom.getRoutingKey()).build();
+            return chatroomdto;
+        }).collect(Collectors.toList());
     }
+
+    //사용자가 판매자인 채팅방 목록 조회
+    public List<ChatRoomDto> findRoomBySellerId(Long sellerId){
+        List<ChatRoom> bySellerId = chatRoomRepository.findBySellerId(sellerId);
+        return bySellerId.stream().map(chatRoom -> {
+            ChatRoomDto chatroomdto = ChatRoomDto.builder().seller(chatRoom.getSeller().getId())
+                    .buyer(chatRoom.getBuyer().getId())
+                    .routingKey(chatRoom.getRoutingKey()).build();
+            return chatroomdto;
+        }).collect(Collectors.toList());
+    }
+
     @Transactional
     public String createRoom(ChatRoomDto chatRoomDto) {
         //여기서 매개변수 더 받아서 이미 존재하는 룸이면 안만들게끔하는 로직 추가해야 해!!
@@ -44,6 +63,8 @@ public class ChatService {
 
             User Seller = userRepository.findById(chatRoomDto.getSeller()).get();
             User Buyer = userRepository.findById(chatRoomDto.getBuyer()).get();
+
+
 
             // Builder 를 이용해서 ChatRoom 을 Building
             ChatRoom room = ChatRoom.builder()
@@ -85,11 +106,18 @@ public class ChatService {
 
     @Transactional
     public List<Chat> chatHistory(String routingKey){
-        List<Chat> chatList = chatRepository.findByChatRoomId(routingKey);
+        List<Chat> chatList = chatRepository.findByChatRoomRoutingKey(routingKey);
 
         return chatList;
 
     }
+
+    @Transactional
+    public Long deleteRoom(String routingKey){
+        return chatRoomRepository.deleteByRoutingKey(routingKey);
+    }
+
+
 
 
 }
