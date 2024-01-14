@@ -26,6 +26,9 @@ public class TradesController {
         return tradesService.cancelTrades(tradeId);
     }
 
-    @GetMapping("/trades/list/{buyerId}")         // 구매 내역 조회
-    public List<TradeSearchDTO> getTrades(@PathVariable("buyerId") Long buyerId) { return tradesService.getTrades(buyerId); }
+    @GetMapping("/trades/buy/{buyerId}")        // 구매 내역 조회
+    public List<TradeSearchDTO> getBuyTrades(@PathVariable("buyerId") Long buyerId) { return tradesService.getBuyTrades(buyerId); }
+
+    @GetMapping("/trades/sell/{sellerId}")      // 판매 내역 조회
+    public List<TradeSearchDTO> getSellTrades(@PathVariable("sellerId") Long sellerId) { return tradesService.getSellTrades(sellerId); }
 }

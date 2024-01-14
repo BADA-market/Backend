@@ -22,29 +22,55 @@ public class TradesService {
     private final ItemRepository itemRepository;
 
     @Transactional      // 거래 내역 생성(성립)
-    public String saveTrades(Long ItemId, Long buyerId){
+    public String saveTrades(Long ItemId, Long buyerId) {
         Item findItem = itemRepository.findById(ItemId).get();
         User buyer = userRepository.findById(buyerId).get();
+
+        // 아이템 판매완료 설정 추가
+        findItem.setPurchase_done(true);
+        itemRepository.save(findItem);
+
         Trades trade = Trades.builder().buyer(buyer)
                 .item(findItem)
                 .build();
+
         tradesRepository.save(trade);
+
         return "Trades Success";
     }
 
     @Transactional      // 거래 취소
-    public String cancelTrades(Long tradeId){
+    public String cancelTrades(Long tradeId) {
         Trades findTrades = tradesRepository.findById(tradeId).get();
         findTrades.CancelPurchase();
+
+        // 아이템 판매중 설정으로 변경
+        Item setItem = findTrades.getItem();
+        setItem.setPurchase_done(false);
+        itemRepository.save(setItem);
+
         tradesRepository.save(findTrades);
+
         return "Trades Cancel";
     }
 
-    @Transactional      // 거래 내역 조회
-    public List<TradeSearchDTO> getTrades(Long buyerId) {
+    @Transactional      // 구매 내역 조회
+    public List<TradeSearchDTO> getBuyTrades(Long buyerId) {
         List<Trades> list = tradesRepository.findAll();
+
         return list.stream()
                 .filter(trades -> trades.getBuyer().getId() == buyerId)
+                .filter(trades -> trades.isPurchase_done())
+                .map(TradeSearchDTO::from)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional      // 판매 내역 조회
+    public List<TradeSearchDTO> getSellTrades(Long sellerId) {
+        List<Trades> list = tradesRepository.findAll();
+
+        return list.stream()
+                .filter(trades -> trades.getItem().getUser().getId() == sellerId)
                 .filter(trades -> trades.isPurchase_done())
                 .map(TradeSearchDTO::from)
                 .collect(Collectors.toList());

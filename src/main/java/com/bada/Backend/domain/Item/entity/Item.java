@@ -8,12 +8,14 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@Setter     // setter 설정 추가
 @NoArgsConstructor
 
 public class Item extends BaseEntity {
