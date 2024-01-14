@@ -26,10 +26,16 @@ public class initDB {
         private final EntityManager em;
 
         public void dbinit() {
-
             User doncham = new User();
-            doncham.dummyUser("돈참","1234");
+            doncham.dummyUser("doncham", "1234");
+            User speakingPotato = new User();
+            speakingPotato.dummyUser("speakingPotato", "1234");
+            User banana = new User();
+            banana.dummyUser("banana", "1234");
+
             em.persist(doncham);
+            em.persist(speakingPotato);
+            em.persist(banana);
         }
     }
 }

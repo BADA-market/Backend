@@ -1,6 +1,7 @@
 package com.bada.Backend.domain.Item.entity;
 
 import com.bada.Backend.domain.BaseEntity;
+import com.bada.Backend.domain.Chat.entity.ChatRoom;
 import com.bada.Backend.domain.Item.dto.ItemSearchDTO;
 import com.bada.Backend.domain.User.entity.User;
 import com.bada.Backend.domain.likes.entity.Likes;
@@ -8,6 +9,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +51,8 @@ public class Item extends BaseEntity {
 
     @OneToMany(mappedBy = "item")
     private List<Likes> likesList = new ArrayList<>();
+    @OneToOne(mappedBy = "item",fetch = FetchType.LAZY)
+    private ChatRoom chatRoom;
 
     @Builder //카테고리 추가 점
     public Item (String picture_url, String title, int price, String description, String hope_location, User user, String category){
@@ -81,4 +85,5 @@ public class Item extends BaseEntity {
         this.is_deleted = true;
     }
 
+    public void setPurchase_done(boolean flag) { this.purchase_done = flag; }
 }

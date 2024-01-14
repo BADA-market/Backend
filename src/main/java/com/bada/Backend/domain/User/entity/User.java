@@ -1,6 +1,7 @@
 package com.bada.Backend.domain.User.entity;
 
 import com.bada.Backend.domain.BaseEntity;
+import com.bada.Backend.domain.Chat.entity.ChatRoom;
 import com.bada.Backend.domain.Item.entity.Item;
 import com.bada.Backend.domain.User.dto.UserSignUpDto;
 import com.bada.Backend.domain.likes.entity.Likes;
@@ -32,6 +33,8 @@ public class User extends BaseEntity {
     private Boolean is_deleted;
 
     private String imageUrl;
+    @OneToMany(mappedBy = "seller")
+    private List<ChatRoom> chatRooms = new ArrayList<>();
 
     //User와 Item의 관계 1대N
     //연관관계의 주인은 N쪽인 Item
