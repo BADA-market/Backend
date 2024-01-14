@@ -15,7 +15,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter     // setter 설정 추가
 @NoArgsConstructor
 
 public class Item extends BaseEntity {
@@ -83,4 +82,5 @@ public class Item extends BaseEntity {
         this.is_deleted = true;
     }
 
+    public void setPurchase_done(boolean flag) { this.purchase_done = flag; }
 }
