@@ -1,6 +1,7 @@
 package com.bada.Backend.domain.review.service;
 
 import com.bada.Backend.domain.User.repository.UserRepository;
+import com.bada.Backend.domain.review.dto.ReviewCreateDTO;
 import com.bada.Backend.domain.review.entity.Review;
 import com.bada.Backend.domain.review.repository.ReviewRepository;
 import com.bada.Backend.domain.trades.entity.Trades;
@@ -18,13 +19,13 @@ public class ReviewService {
     private final UserRepository userRepository;
 
     @Transactional      // 리뷰 작성
-    public String createReview(Long tradeId, String description, int waterTemperature) {
+    public String createReview(Long tradeId, ReviewCreateDTO reviewCreateDTO) {
         Trades trade = tradesRepository.getById(tradeId);
 
         Review newReview = Review.builder().trade(trade)
                             .build();
 
-        newReview.setDetail(description, waterTemperature);
+        newReview.setDetail(reviewCreateDTO.getDescription(), reviewCreateDTO.getWaterTemperature());
 
         reviewRepository.save(newReview);
 
