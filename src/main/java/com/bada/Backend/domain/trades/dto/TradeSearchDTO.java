@@ -1,6 +1,5 @@
 package com.bada.Backend.domain.trades.dto;
 
-import com.bada.Backend.domain.Item.entity.Item;
 import com.bada.Backend.domain.trades.entity.Trades;
 import lombok.Getter;
 import lombok.Setter;

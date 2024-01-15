@@ -1,7 +1,6 @@
 package com.bada.Backend.domain.trades.controller;
 
 import com.bada.Backend.domain.trades.dto.TradeSearchDTO;
-import com.bada.Backend.domain.trades.entity.Trades;
 import com.bada.Backend.domain.trades.service.TradesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
