@@ -1,12 +1,12 @@
 package com.bada.Backend.domain.review.controller;
 
 import com.bada.Backend.domain.review.dto.ReviewCreateDTO;
+import com.bada.Backend.domain.review.dto.ReviewSearchDTO;
 import com.bada.Backend.domain.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,5 +25,11 @@ public class ReviewController {
     public String deleteReview(@PathVariable("reviewId") Long reviewId) {
 
         return reviewService.deleteReview(reviewId);
+    }
+
+    // 작성한 리뷰 조회
+    @GetMapping("/review/search/{buyerId}")
+    public List<ReviewSearchDTO> getReview(@PathVariable("buyerId") Long buyerId) {
+        return reviewService.getReview(buyerId);
     }
 }
