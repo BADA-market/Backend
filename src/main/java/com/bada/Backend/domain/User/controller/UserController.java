@@ -4,6 +4,7 @@ import com.bada.Backend.domain.User.dto.UserLoginDto;
 import com.bada.Backend.domain.User.dto.UserSignUpDto;
 import com.bada.Backend.domain.User.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,5 +23,16 @@ public class UserController {
     public Long login(@RequestBody UserLoginDto userloginDto) throws Exception{
         return userService.login(userloginDto);
 
+    }
+
+    @PostMapping("/sign-up")
+    public String signUp2(@RequestBody UserSignUpDto userSignUpDto) throws Exception {
+        userService.signUp(userSignUpDto);
+        return "회원가입 성공";
+    }
+
+    @GetMapping("/jwt-test")
+    public String jwtTest() {
+        return "jwtTest 요청 성공";
     }
 }
