@@ -40,4 +40,11 @@ public class ReviewController {
 
         return reviewService.getSendReview(sellerId);
     }
+
+    // 리뷰 수정
+    @PostMapping("/review/update/{reviewId}")
+    public String updateReview(@PathVariable("reviewId") Long reviewId, @RequestBody ReviewCreateDTO reviewUpdateDTO) {
+
+        return reviewService.updateReview(reviewId, reviewUpdateDTO);
+    }
 }

@@ -64,4 +64,15 @@ public class ReviewService {
                 .map(ReviewSearchDTO::from)
                 .collect(Collectors.toList());
     }
+
+    @Transactional      // 리뷰 수정
+    public String updateReview(Long reviewId, ReviewCreateDTO reviewUpdateDTO) {
+        Review updateReview = reviewRepository.getById(reviewId);
+
+        updateReview.setDetail(reviewUpdateDTO.getDescription(), reviewUpdateDTO.getWaterTemperature());
+
+        reviewRepository.save(updateReview);
+
+        return "Review is updated";
+    }
 }
