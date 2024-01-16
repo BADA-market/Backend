@@ -24,13 +24,20 @@ public class Review {
 
     private int waterTemperature;
 
+    private boolean is_deleted;
+
     @Builder
     public Review(Trades trade) {
         this.trade = trade;
+        is_deleted = false;
     }
 
     public void setDetail(String description, int waterTemperature) {
         this.description = description;
         this.waterTemperature = waterTemperature;
+    }
+
+    public void deleteReview() {
+        this.is_deleted = true;
     }
 }

@@ -21,7 +21,7 @@ public class TradesController {
     }
 
     @PostMapping("/trades/cancel/{tradeId}")     // 거래 내역 취소
-    public String deleteTrades(@PathVariable("tradeId") Long tradeId) {
+    public String cancelTrades(@PathVariable("tradeId") Long tradeId) {
         return tradesService.cancelTrades(tradeId);
     }
 
@@ -30,4 +30,7 @@ public class TradesController {
 
     @GetMapping("/trades/sell/{sellerId}")      // 판매 내역 조회
     public List<TradeSearchDTO> getSellTrades(@PathVariable("sellerId") Long sellerId) { return tradesService.getSellTrades(sellerId); }
+
+    @PostMapping("/trades/delete/{tradeId}")    // 거래 내역 삭제
+    public String deleteTrades(@PathVariable("tradeId") Long tradeId) { return tradesService.deleteTrades(tradeId); }
 }

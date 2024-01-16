@@ -40,7 +40,11 @@ public class ReviewService {
 
     @Transactional      // 리뷰 삭제
     public String deleteReview(Long reviewId) {
-        reviewRepository.deleteById(reviewId);
+        Review review = reviewRepository.getById(reviewId);
+
+        review.deleteReview();
+
+        reviewRepository.save(review);
 
         return "Review is deleted";
     }
@@ -51,6 +55,7 @@ public class ReviewService {
 
         return list.stream()
                 .filter(review -> review.getTrade().getBuyer().getId() == buyerId)
+                .filter(review -> !review.is_deleted())
                 .map(ReviewSearchDTO::from)
                 .collect(Collectors.toList());
     }
@@ -61,6 +66,7 @@ public class ReviewService {
 
         return list.stream()
                 .filter(review -> review.getTrade().getItem().getUser().getId() == sellerrId)
+                .filter(review -> !review.is_deleted())
                 .map(ReviewSearchDTO::from)
                 .collect(Collectors.toList());
     }

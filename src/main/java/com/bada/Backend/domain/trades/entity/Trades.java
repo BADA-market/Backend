@@ -27,13 +27,18 @@ public class Trades {
 
     private boolean purchase_done;
 
+    private boolean is_deleted;
+
     @Builder
     public Trades(User buyer, Item item) {
         this.buyer = buyer;
         this.item = item;
         this.purchase_done = true;
+        this.is_deleted = false;
     }
 
     public void CancelPurchase() { this.purchase_done = false; }
+
+    public void DeleteTrade() { this.is_deleted = true; }
 
 }
