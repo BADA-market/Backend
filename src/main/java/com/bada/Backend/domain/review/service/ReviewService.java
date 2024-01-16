@@ -45,12 +45,22 @@ public class ReviewService {
         return "Review is deleted";
     }
 
-    @Transactional      // 리뷰 조회
-    public List<ReviewSearchDTO> getReview(Long buyerId) {
+    @Transactional      // 내가 쓴 리뷰 조회
+    public List<ReviewSearchDTO> getPostReview(Long buyerId) {
         List<Review> list = reviewRepository.findAll();
 
         return list.stream()
                 .filter(review -> review.getTrade().getBuyer().getId() == buyerId)
+                .map(ReviewSearchDTO::from)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional      // 내가 받은 리뷰 조회
+    public List<ReviewSearchDTO> getSendReview(Long sellerrId) {
+        List<Review> list = reviewRepository.findAll();
+
+        return list.stream()
+                .filter(review -> review.getTrade().getItem().getUser().getId() == sellerrId)
                 .map(ReviewSearchDTO::from)
                 .collect(Collectors.toList());
     }

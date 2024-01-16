@@ -28,8 +28,16 @@ public class ReviewController {
     }
 
     // 작성한 리뷰 조회
-    @GetMapping("/review/search/{buyerId}")
+    @GetMapping("/review/search/post/{buyerId}")
     public List<ReviewSearchDTO> getReview(@PathVariable("buyerId") Long buyerId) {
-        return reviewService.getReview(buyerId);
+
+        return reviewService.getPostReview(buyerId);
+    }
+
+    // 받은 리뷰 조회
+    @GetMapping("/review/search/send/{sellerId}")
+    public List<ReviewSearchDTO> getSendReview(@PathVariable("sellerId") Long sellerId) {
+
+        return reviewService.getSendReview(sellerId);
     }
 }
