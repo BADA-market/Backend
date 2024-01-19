@@ -1,9 +1,9 @@
-package com.bada.Backend.domain.jwt.filter;
+package com.bada.Backend.domain.User.jwt.filter;
 
 import com.bada.Backend.domain.User.entity.User;
 import com.bada.Backend.domain.User.repository.UserRepository;
-import com.bada.Backend.domain.jwt.service.JwtService;
-import com.bada.Backend.domain.jwt.util.PasswordUtil;
+import com.bada.Backend.domain.User.jwt.service.JwtService;
+import com.bada.Backend.domain.User.jwt.util.PasswordUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

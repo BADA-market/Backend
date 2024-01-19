@@ -1,4 +1,4 @@
-package com.bada.Backend.domain.jwt.service;
+package com.bada.Backend.domain.User.jwt.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

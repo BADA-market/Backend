@@ -70,6 +70,16 @@ public class User extends BaseEntity {
         this.age = userSignUpDto.getAge(); //추가
     }
 
+
+    public User(SocialType socialType, String socialId, String email, String nickname, String imageUrl, Role role) {
+        this.socialType = socialType;
+        this.socialId = socialId;
+        this.nickname = nickname;
+        this.imageUrl = imageUrl;
+        this.email = email;
+        this.role = role;
+    }
+
     //initDB에서 유저 한명 자동생성하려고 만듬(개발편의용)
     public void dummyUser(String name, String password) {
         this.nickname = name;

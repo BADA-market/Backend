@@ -1,4 +1,4 @@
-package com.bada.Backend.domain.jwt.util;
+package com.bada.Backend.domain.User.jwt.util;
 
 import java.util.Random;
 

@@ -1,7 +1,7 @@
 package com.bada.Backend.domain.User.login.handler;
 
 import com.bada.Backend.domain.User.repository.UserRepository;
-import com.bada.Backend.domain.jwt.service.JwtService;
+import com.bada.Backend.domain.User.jwt.service.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
