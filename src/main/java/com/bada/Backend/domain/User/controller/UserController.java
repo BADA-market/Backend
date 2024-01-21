@@ -25,12 +25,6 @@ public class UserController {
 
     }
 
-    @PostMapping("/sign-up")
-    public String signUp2(@RequestBody UserSignUpDto userSignUpDto) throws Exception {
-        userService.signUp(userSignUpDto);
-        return "회원가입 성공";
-    }
-
     @GetMapping("/jwt-test")
     public String jwtTest() {
         return "jwtTest 요청 성공";

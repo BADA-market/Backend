@@ -10,7 +10,7 @@ public class UserSignUpDto {
     private String userId; //아이디
     private String email;
     private String password;
-    private String city;
+    private String address;
     private int age;
 
 }

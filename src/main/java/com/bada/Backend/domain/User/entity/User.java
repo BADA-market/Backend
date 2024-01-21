@@ -66,8 +66,9 @@ public class User extends BaseEntity {
         this.loginId = userSignUpDto.getUserId();
         this.email = userSignUpDto.getEmail();
         this.password = userSignUpDto.getPassword();
-        this.city = userSignUpDto.getCity(); //이름 변경 (address -> city)
+        this.city = userSignUpDto.getAddress(); //이름 변경 (address -> city)
         this.age = userSignUpDto.getAge(); //추가
+        this.role = Role.USER;
     }
 
 

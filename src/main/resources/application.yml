@@ -11,6 +11,9 @@ spring:
   config:
     activate:
       on-profile: "local"
+  devtools:
+    remote:
+      secret : mysecretkey
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://database:3306/myDB
