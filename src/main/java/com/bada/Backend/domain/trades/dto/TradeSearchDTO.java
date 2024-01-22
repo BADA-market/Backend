@@ -10,6 +10,7 @@ public class TradeSearchDTO {
 
     private Long id;
     private Long seller_id;
+    private double sellerWaterTemperature;
     private Long buyer_id;
     private String title;
     private int price;
@@ -19,6 +20,7 @@ public class TradeSearchDTO {
         TradeSearchDTO tradeSearchDTO = new TradeSearchDTO();
         tradeSearchDTO.setId(trade.getId());
         tradeSearchDTO.setSeller_id(trade.getItem().getUser().getId());
+        tradeSearchDTO.setSellerWaterTemperature(trade.getItem().getUser().getWaterTemperature());
         tradeSearchDTO.setBuyer_id(trade.getBuyer().getId());
         tradeSearchDTO.setTitle(trade.getItem().getTitle());
         tradeSearchDTO.setPrice(trade.getItem().getPrice());
