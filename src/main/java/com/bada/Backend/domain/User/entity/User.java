@@ -30,8 +30,8 @@ public class User extends BaseEntity {
     private String nickname;
     private String imageUrl;
     private String loginId; // 아 아이디가 있구나
-    private int age; // 너네는 되기만 하면 바로 삭제해줄게
-    private String city; // 너네는 되기만 하면 바로 삭제해줄게
+
+    private String city;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -67,8 +67,9 @@ public class User extends BaseEntity {
         this.email = userSignUpDto.getEmail();
         this.password = userSignUpDto.getPassword();
         this.city = userSignUpDto.getAddress(); //이름 변경 (address -> city)
-        this.age = userSignUpDto.getAge(); //추가
+        //this.age = userSignUpDto.getAge(); //추가
         this.role = Role.USER;
+        this.refreshToken = ""; //null값을 넣고 싶은데
     }
 
 

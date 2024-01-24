@@ -13,4 +13,6 @@ public class UserSignUpDto {
     private String address;
     private int age;
 
+    private String refreshToken;
+
 }
