@@ -63,7 +63,7 @@ public class User extends BaseEntity {
     @Builder
     public User(UserSignUpDto userSignUpDto) {
         this.nickname = userSignUpDto.getNickname();
-        this.loginId = userSignUpDto.getUserId();
+        this.loginId = userSignUpDto.getLoginId();
         this.email = userSignUpDto.getEmail();
         this.password = userSignUpDto.getPassword();
         this.city = userSignUpDto.getAddress(); //이름 변경 (address -> city)

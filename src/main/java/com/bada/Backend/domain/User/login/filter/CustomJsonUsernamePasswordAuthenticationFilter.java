@@ -1,8 +1,11 @@
 package com.bada.Backend.domain.User.login.filter;
 
+import com.bada.Backend.domain.User.entity.User;
+import com.bada.Backend.domain.User.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,27 +18,33 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+import static com.amazonaws.services.ec2.model.PrincipalType.User;
+
 /**
  * 스프링 시큐리티의 폼 기반의 UsernamePasswordAuthenticationFilter를 참고하여 만든 커스텀 필터
  * 거의 구조가 같고, Type이 Json인 Login만 처리하도록 설정한 부분만 다르다. (커스텀 API용 필터 구현)
  * Username : 회원 아이디 -> email로 설정
  * "/login" 요청 왔을 때 JSON 값을 매핑 처리하는 필터
  */
+@Slf4j
 public class CustomJsonUsernamePasswordAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     private static final String DEFAULT_LOGIN_REQUEST_URL = "/login"; // "/login"으로 오는 요청을 처리
     private static final String HTTP_METHOD = "POST"; // 로그인 HTTP 메소드는 POST
     private static final String CONTENT_TYPE = "application/json"; // JSON 타입의 데이터로 오는 로그인 요청만 처리
-    private static final String USERNAME_KEY = "email"; // 회원 로그인 시 이메일 요청 JSON Key : "email"
+    private static final String USERNAME_KEY = "loginId"; // 회원 로그인 시 이메일 요청 JSON Key : "email"
     private static final String PASSWORD_KEY = "password"; // 회원 로그인 시 비밀번호 요청 JSon Key : "password"
     private static final AntPathRequestMatcher DEFAULT_LOGIN_PATH_REQUEST_MATCHER =
             new AntPathRequestMatcher(DEFAULT_LOGIN_REQUEST_URL, HTTP_METHOD); // "/login" + POST로 온 요청에 매칭된다.
 
     private final ObjectMapper objectMapper;
 
-    public CustomJsonUsernamePasswordAuthenticationFilter(ObjectMapper objectMapper) {
+    private final UserRepository userRepository;
+    //오 생성자 주입 방식 오랜만이다.
+    public CustomJsonUsernamePasswordAuthenticationFilter(ObjectMapper objectMapper, UserRepository userRepository) {
         super(DEFAULT_LOGIN_PATH_REQUEST_MATCHER); // 위에서 설정한 "login" + POST로 온 요청을 처리하기 위해 설정
         this.objectMapper = objectMapper;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -66,8 +75,14 @@ public class CustomJsonUsernamePasswordAuthenticationFilter extends AbstractAuth
 
         Map<String, String> usernamePasswordMap = objectMapper.readValue(messageBody, Map.class);
 
-        String email = usernamePasswordMap.get(USERNAME_KEY);
+        String loginId = usernamePasswordMap.get(USERNAME_KEY);
         String password = usernamePasswordMap.get(PASSWORD_KEY);
+        log.info("loginId : {}", loginId);
+
+        // 데이터베이스에서 사용자를 찾고 이메일 주소를 가져옵니다.
+        String email = userRepository.findByLoginId(loginId)
+                .map(com.bada.Backend.domain.User.entity.User::getEmail) // User 객체에서 이메일 추출
+                .orElseThrow(() -> new AuthenticationServiceException("사용자를 찾을 수 없습니다."));
 
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(email, password);//principal 과 credentials 전달
 

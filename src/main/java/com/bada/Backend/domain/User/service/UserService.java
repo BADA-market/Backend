@@ -8,6 +8,7 @@ import com.bada.Backend.domain.User.jwt.service.JwtService;
 import com.bada.Backend.domain.User.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
 
@@ -36,18 +38,21 @@ public class UserService {
                         .userSignUpDto(userSignUpDto)
                         .build();
         user.passwordEncode(passwordEncoder);
+        log.info("LoginId : {}", user.getLoginId());
 
         userRepository.save(user);
 
 
     }
 
-    public Long login(UserLoginDto userLoginDto, HttpServletRequest request) throws Exception {
+    public String login(UserLoginDto userLoginDto, HttpServletRequest request) throws Exception {
         String userId = userLoginDto.getLoginId();
+        log.info("userId : {}", userId);
         String password = userLoginDto.getPassword();
         Optional<User> findUser = userRepository.findByLoginIdAndPassword(userLoginDto.getLoginId(), userLoginDto.getPassword());
         if(findUser.isPresent()){
-            return findUser.get().getId(); //있으면 id(기본키) 반환
+            String access = jwtService.extractAccessToken(request).get();
+            return access;
         }
         else { //없으면 예외
             throw new Exception("아이디와 비밀번호를 확인해 주세요");

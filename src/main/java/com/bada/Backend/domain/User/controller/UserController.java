@@ -3,6 +3,7 @@ package com.bada.Backend.domain.User.controller;
 import com.bada.Backend.domain.User.dto.UserLoginDto;
 import com.bada.Backend.domain.User.dto.UserSignUpDto;
 import com.bada.Backend.domain.User.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -24,11 +26,14 @@ public class UserController {
         return "회원가입 성공";
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody UserLoginDto userloginDto) throws Exception{
-        return userService.login(userloginDto);
-
-    }
+//    @PostMapping("/login")
+//    public ResponseEntity<Map<String, Object>> login(@RequestBody UserLoginDto userloginDto, HttpServletRequest request) throws Exception{
+//        String access = userService.login(userloginDto, request);
+//        Map<String, Object> response = new HashMap<>();
+//        response.put("access", access);
+//        return ResponseEntity.ok(response);
+//
+//    }
 
     @GetMapping("/jwt-test")
     public String jwtTest() {
