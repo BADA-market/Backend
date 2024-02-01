@@ -5,6 +5,7 @@ import com.bada.Backend.domain.User.jwt.service.JwtService;
 import com.bada.Backend.domain.User.oauth2.CustomOAuth2User;
 import com.bada.Backend.domain.User.repository.UserRepository;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,17 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
             // User의 Role이 GUEST일 경우 처음 요청한 회원이므로 회원가입 페이지로 리다이렉트
             if(oAuth2User.getRole() == Role.GUEST) {
                 String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
+                //쿠키 만들기
+                Cookie token = new Cookie("token", accessToken);
+                token.setHttpOnly(false);
+                token.setSecure(false);
+                token.setMaxAge(3600);
+                token.setPath("/");
+                response.addCookie(token);
+
+                //리프레쉬 토큰 -> 쿠키 만들기
+                String refreshToken = jwtService.createRefreshToken();
+                //이 코드 의미가 없어 어차피 쿠키로 보내는거니까, 하지만 삭제 보류
                 response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
                 response.sendRedirect("/oauth2/sign_up"); // 프론트의 회원가입 추가 정보 입력 폼으로 리다이렉트, /login/oauth2/code/naver
                 log.info("회원가입 추가 정보 입력 폼으로 리다이렉트");

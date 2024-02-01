@@ -5,6 +5,7 @@ import com.bada.Backend.domain.Chat.entity.ChatRoom;
 import com.bada.Backend.domain.Item.entity.Item;
 import com.bada.Backend.domain.User.Role;
 import com.bada.Backend.domain.User.SocialType;
+import com.bada.Backend.domain.User.dto.OAuth2ExtraInfoDTO;
 import com.bada.Backend.domain.User.dto.UserSignUpDto;
 import com.bada.Backend.domain.likes.entity.Likes;
 import jakarta.persistence.*;
@@ -100,5 +101,14 @@ public class User extends BaseEntity {
 
     public void updateRefreshToken(String updateRefreshToken) {
         this.refreshToken = updateRefreshToken;
+    }
+
+    //소셜 로그인 추가 정보 저장하기 위한 로직
+    public void updateSocialInfo(OAuth2ExtraInfoDTO oAuth2ExtraInfoDTO) {
+        this.nickname = oAuth2ExtraInfoDTO.getNickname();
+        this.city = oAuth2ExtraInfoDTO.getCity();
+        this.email = oAuth2ExtraInfoDTO.getEmail();
+        this.role = Role.USER; //User로 업그레이드
+        this.is_deleted = false;
     }
 }
