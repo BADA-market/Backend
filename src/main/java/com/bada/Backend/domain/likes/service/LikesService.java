@@ -20,6 +20,13 @@ public class LikesService {
     public String getLikes(Long userId, Long ItemId){
         User findUser = userRepository.findById(userId).get();
         Item findItem = itemRepository.findById(ItemId).get();
+
+        //좋아요 중복 체크(혹시나)
+        Likes findLikes = likesRepository.findByUserIdAndItemId(userId, ItemId);
+        if(findLikes != null){
+            return "이미 좋아요를 누른 상품입니다.";
+        }
+
         Likes like = Likes.builder().user(findUser)
                 .item(findItem)
                 .build();
