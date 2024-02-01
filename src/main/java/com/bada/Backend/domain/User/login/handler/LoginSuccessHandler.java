@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -31,9 +32,10 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         String refreshToken = "Bearer " + jwtService.createRefreshToken(); // JwtService의 createRefreshToken을 사용하여 RefreshToken 발급
 
         jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken); // 응답 헤더에 AccessToken, RefreshToken 실어서 응답
-
+        AtomicReference<Long> userPK = new AtomicReference<>();
         userRepository.findByEmail(email)
                 .ifPresent(user -> {
+                    userPK.set(user.getId());
                     user.updateRefreshToken(refreshToken);
                     userRepository.saveAndFlush(user);
                 });
@@ -43,7 +45,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         response.setStatus(HttpServletResponse.SC_OK);
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/plain;charset=UTF-8");
-        response.getWriter().write("로그인 성공! 축하합니다!!!!.");
+        response.getWriter().write(userPK.get().toString());
     }
 
     private String extractUsername(Authentication authentication) {
