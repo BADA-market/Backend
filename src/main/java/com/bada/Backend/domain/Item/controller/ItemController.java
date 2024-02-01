@@ -56,5 +56,11 @@ public class ItemController {
     public List<ItemSearchDTO> getPopularItem(@PathVariable("userId") Long userId){
         return itemService.getPopularItem(userId);
     }
+    //내가 좋아요한 아이템 조회
+    @GetMapping("/item/myLikes/{userId}")
+    public List<ItemSearchDTO> getMyLikes(@PathVariable("userId") Long userId){
+        return itemService.getMyLikes(userId);
+    }
+
 
 }

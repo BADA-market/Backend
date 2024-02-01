@@ -128,5 +128,24 @@ public class ItemService {
     }
 
 
+    public List<ItemSearchDTO> getMyLikes(Long userId) {
+        //일반 조회에서 filter 한줄 추가해서 구현
+        List<Item> items = itemRepository.findByOrderByCreatedAtDesc();
+        AtomicBoolean heart = new AtomicBoolean(false);
+        return items.stream()
+                .filter(item->
+                        item.getIs_deleted().equals(false) //Is_deleted == True 이면 조회x
+                )
+                .peek(item -> { //유저가 좋아요를 누른 게시물이라면 heart = true, 아니라면 heart = false로 설정
+                    Optional<Likes> likesOptional = Optional.ofNullable(likesRepository.findByUserIdAndItemId(userId, item.getId()));
+                    heart.set(likesOptional.isPresent());
+                })
+                .filter(item -> heart.get() == true) //좋아요를 누른 게시물만 조회
+                .map(ItemSearchDTO::from) //조회한 items리스트의 각 item을 ItemSearchDTO로 바꿈
+                .peek(itemSearchDTO -> {
+                    itemSearchDTO.setHeart(heart.get());
+                })
+                .collect(Collectors.toList()); //바뀐 ItemSearchDTO를 하나씩 배열에 집어넣음
 
+    }
 }
