@@ -53,6 +53,17 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             return; // return으로 이후 현재 필터 진행 막기 (안해주면 아래로 내려가서 계속 필터 진행시킴)
         }
 
+        // /chat/** 경로로 시작하는 요청을 필터 처리에서 제외
+        if (request.getRequestURI().startsWith("/chat")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        //웹소켓 처음 연결시 handshake하는 요청을 제외 + pub 요청도 제외(근데 이거는 http 요청은 아닌거 같은데..)
+        if(request.getRequestURI().startsWith("/stomp/chat") || request.getRequestURI().startsWith("/pub")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         // 사용자 요청 헤더에서 RefreshToken 추출
         // -> RefreshToken이 없거나 유효하지 않다면(DB에 저장된 RefreshToken과 다르다면) null을 반환
         // 사용자의 요청 헤더에 RefreshToken이 있는 경우는, AccessToken이 만료되어 요청한 경우밖에 없다.
