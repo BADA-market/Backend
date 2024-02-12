@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "User API", description = "Swagger 테스트용 API")
 public class UserController {
     private final UserService userService;
 
