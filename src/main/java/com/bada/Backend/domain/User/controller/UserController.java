@@ -31,11 +31,11 @@ public class UserController {
         return "회원가입 성공";
     }
 
-    @Operation(summary = "로그인", description = "로그인 성공 여부를 반환합니다.")
-    @PostMapping("/login")
-    public Long login(@RequestBody UserLoginDto userloginDto) throws Exception {
-        return userService.login(userloginDto);
-
+//    @Operation(summary = "로그인", description = "로그인 성공 여부를 반환합니다.")
+//    @PostMapping("/login")
+//    public String login(@RequestBody UserLoginDto userloginDto,HttpServletRequest request) throws Exception {
+//        return userService.login(userloginDto, request);
+//    }
     @GetMapping("/jwt-test")
     public String jwtTest() {
         return "jwtTest 요청 성공";
