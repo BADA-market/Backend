@@ -60,7 +60,8 @@ public class TradesService {
 
         return list.stream()
                 .filter(trades -> trades.getBuyer().getId() == buyerId)
-                .filter(trades -> trades.isPurchase_done())
+                .filter(trades -> trades.isPurchase_done())     // 거래는 되었지만
+                .filter(trades -> !trades.is_deleted())         // 삭제되지 않은 것들
                 .map(TradeSearchDTO::from)
                 .collect(Collectors.toList());
     }
@@ -71,8 +72,18 @@ public class TradesService {
 
         return list.stream()
                 .filter(trades -> trades.getItem().getUser().getId() == sellerId)
-                .filter(trades -> trades.isPurchase_done())
+                .filter(trades -> trades.isPurchase_done())     // 거래는 되었지만
+                .filter(trades -> !trades.is_deleted())         // 삭제되지 않은 것들
                 .map(TradeSearchDTO::from)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional      // 거래 내역 삭제
+    public String deleteTrades(Long tradeId) {
+        Trades trade = tradesRepository.getById(tradeId);
+
+        trade.DeleteTrade();
+
+        return "Trades is deleted";
     }
 }

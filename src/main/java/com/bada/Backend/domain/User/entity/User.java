@@ -30,6 +30,8 @@ public class User extends BaseEntity {
 
     private String address; //뭔 형식이야?
 
+    private double waterTemperature;    // 수온 추가
+
     private Boolean is_deleted;
 
     private String imageUrl;
@@ -54,11 +56,29 @@ public class User extends BaseEntity {
         this.email = userSignUpDto.getEmail();
         this.password = userSignUpDto.getPassword();
         this.address = userSignUpDto.getAddress();
+        this.waterTemperature = 36.5;
     }
 
     //initDB에서 유저 한명 자동생성하려고 만듬(개발편의용)
     public void dummyUser(String name, String password) {
         this.nickname = name;
         this.password = password;
+        this.waterTemperature = 36.5;
+    }
+
+    // waterTemperature setter
+    public void setWaterTemperature(double value) {
+        this.waterTemperature += value;
+    }
+
+    public double valueWaterTemperature(int waterTemperature) {
+        double value = 0;
+        if(waterTemperature > 80) value = 1.5;
+        else if(waterTemperature > 60) value = 1;
+        else if(waterTemperature > 40) value = 0.5;
+        else if(waterTemperature > 20) value = -1;
+        else value = -2;
+
+        return value;
     }
 }
