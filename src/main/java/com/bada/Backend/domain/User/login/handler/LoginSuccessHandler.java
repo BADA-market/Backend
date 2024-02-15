@@ -2,6 +2,7 @@ package com.bada.Backend.domain.User.login.handler;
 
 import com.bada.Backend.domain.User.repository.UserRepository;
 import com.bada.Backend.domain.User.jwt.service.JwtService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
@@ -23,6 +26,9 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     @Value("${jwt.access.expiration}")
     private String accessTokenExpiration;
+
+    // ObjectMapper 인스턴스 생성
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -39,13 +45,21 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
                     user.updateRefreshToken(refreshToken);
                     userRepository.saveAndFlush(user);
                 });
+        // User PK를 JSON 객체로 변환
+        Map<String, String> userKeyMap = new HashMap<>();
+        userKeyMap.put("userKey", userPK.get().toString());
+
+        // JSON 문자열로 변환
+        String userKeyJson = objectMapper.writeValueAsString(userKeyMap);
+
         log.info("로그인에 성공하였습니다. 이메일 : {}", email);
         log.info("로그인에 성공하였습니다. AccessToken : {}", accessToken);
         log.info("발급된 AccessToken 만료 기간 : {}", accessTokenExpiration);
         response.setStatus(HttpServletResponse.SC_OK);
         response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/plain;charset=UTF-8");
-        response.getWriter().write(userPK.get().toString());
+
+        response.setContentType("application/json;charset=UTF-8"); // 컨텐트 타입을 application/json으로 설정
+        response.getWriter().write(userKeyJson); // JSON 문자열 응답으로 반환
     }
 
     private String extractUsername(Authentication authentication) {
