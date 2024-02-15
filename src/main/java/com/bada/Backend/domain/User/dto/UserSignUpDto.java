@@ -7,9 +7,12 @@ import lombok.NoArgsConstructor;
 @Getter
 public class UserSignUpDto {
     private String nickname;
-    private String userId; //아이디
+    private String loginId; //아이디
     private String email;
     private String password;
     private String address;
+    private int age;
+
+    private String refreshToken;
 
 }

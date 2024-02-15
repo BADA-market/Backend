@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
@@ -89,6 +90,7 @@ public class ChatService {
     }
 
     @Transactional
+    @Async
     public void chatSave(ChatDto chatDto, String routingKey){
 
         ChatRoom chatRoom = chatRoomRepository.findById(routingKey).get();
@@ -105,6 +107,7 @@ public class ChatService {
     }
 
     @Transactional
+    //@Async 이렇게 사용하면 비동기라서 반환을 빨리 되는데 List<Chat>의 계산 결과는 나중에 나올 수 있음
     public List<Chat> chatHistory(String routingKey){
         List<Chat> chatList = chatRepository.findByChatRoomRoutingKey(routingKey);
 

@@ -26,6 +26,8 @@ public class ItemSearchDTO {
 
     private Boolean heart; //좋아요 여부
 
+    private Long itemId;
+
     //item객체 ItemSearchDTO로 변환하기
     //조회시(카테고리, 시간) 동작함
     public static ItemSearchDTO from(Item item) {
@@ -41,6 +43,7 @@ public class ItemSearchDTO {
         itemSearchDTO.setPurchase_done(item.getPurchase_done());
         itemSearchDTO.setCreateAt(item.getCreatedAt());
         itemSearchDTO.setUser_id(item.getUser().getId());
+        itemSearchDTO.setItemId(item.getId());
 
 
         return itemSearchDTO;
