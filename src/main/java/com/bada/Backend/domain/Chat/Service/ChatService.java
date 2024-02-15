@@ -107,7 +107,7 @@ public class ChatService {
     }
 
     @Transactional
-    @Async
+    //@Async 이렇게 사용하면 비동기라서 반환을 빨리 되는데 List<Chat>의 계산 결과는 나중에 나올 수 있음
     public List<Chat> chatHistory(String routingKey){
         List<Chat> chatList = chatRepository.findByChatRoomRoutingKey(routingKey);
 

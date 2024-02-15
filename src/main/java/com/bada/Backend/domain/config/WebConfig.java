@@ -15,5 +15,9 @@ public class WebConfig implements WebMvcConfigurer {
                 .exposedHeaders("Custom-Header")
                 .allowCredentials(true)
                 .maxAge(3600);
+
+//        //웹소켓 연결을 위한 CORS 설정 일단 추가 ㅋㅋ
+//        registry.addMapping("/stomp/chat/**")
+//                .allowedOrigins("http://example.com");
     }
 }

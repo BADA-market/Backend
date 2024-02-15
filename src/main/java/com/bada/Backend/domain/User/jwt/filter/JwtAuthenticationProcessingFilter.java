@@ -58,8 +58,8 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        //웹소켓 처음 연결시 handshake하는 요청을 제외 + pub 요청도 제외(근데 이거는 http 요청은 아닌거 같은데..)
-        if(request.getRequestURI().startsWith("/stomp/chat") || request.getRequestURI().startsWith("/pub")) {
+        //웹소켓 처음 연결시 handshake하는 요청을 제외 + pub 요청도 제외(근데 이거는 http 요청은 아닌거 같은데..) //|| request.getRequestURI().startsWith("/exchange")
+        if(request.getRequestURI().startsWith("/stomp/chat") || request.getRequestURI().startsWith("/pub")){
             filterChain.doFilter(request, response);
             return;
         }
